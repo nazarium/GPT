@@ -1,0 +1,34 @@
+/* Shared button system: soft minimalism. */
+:root{--button-height:50px;--button-radius:999px;--button-fill:#353535;--button-border:#666;--button-hover:#414141;--button-gap:16px}
+:is(.text-link,.load-more,.contact-action,.contact-submit,.blog-read,.article-back,.article-next,.back-top,.nav-contact,.studio-cta,.dialog-close,.gallery-controls button,.filters button){display:inline-flex;align-items:center;justify-content:center;gap:var(--button-gap);min-height:var(--button-height);max-width:100%;padding:12px 22px;border:1px solid var(--button-border);border-radius:var(--button-radius);background:var(--button-fill);color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;line-height:1.4;letter-spacing:0;text-decoration:none;box-shadow:none;transition:background .18s,border-color .18s,color .18s,transform .18s}
+:is(.text-link,.load-more,.contact-action,.contact-submit,.blog-read,.article-back,.article-next,.back-top,.nav-contact,.studio-cta,.dialog-close,.gallery-controls button,.filters button):hover{background:var(--button-hover);border-color:#999;color:var(--ink);text-decoration:none}
+:is(.text-link,.load-more,.contact-action,.contact-submit,.blog-read,.article-back,.article-next,.back-top,.nav-contact,.studio-cta,.dialog-close,.gallery-controls button,.filters button):active{transform:translateY(1px)}
+:is(.hero-bottom .text-link,.contact-submit,.nav-contact,.studio-cta){padding:7px 7px 7px 22px;background:var(--ink);color:var(--paper);border-color:var(--ink);gap:22px}
+a.studio-cta{font-size:16px}
+:is(.hero-bottom .text-link,.contact-submit,.nav-contact,.studio-cta):hover{background:#e8e8e8;color:var(--paper);border-color:#e8e8e8}
+:is(.hero-bottom .text-link,.contact-submit,.nav-contact,.studio-cta)>span{display:grid;place-items:center;flex-shrink:0;width:34px;height:34px;margin:0;border-radius:50%;background:var(--accent);color:#171717;font-size:22px;font-weight:400;line-height:1}
+:is(.text-link,.contact-action,.load-more,.blog-read)>span{flex-shrink:0;font-size:20px;font-weight:400;line-height:1}
+.filters{gap:10px}
+.filters button{gap:10px;padding:12px 18px}
+.filters button.active{background:var(--ink);color:var(--paper);border-color:var(--ink);box-shadow:none}
+.filters button.active:hover{background:#e8e8e8;color:var(--paper);border-color:#e8e8e8}
+.filters button.active::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.filters button.active::after{display:none}
+.filters button sup{padding:0;background:transparent;color:inherit;font-size:11px;opacity:.75}
+.filters button.active sup{background:transparent;color:inherit}
+.image-circle,.project-open{display:grid;place-items:center;width:var(--button-height);height:var(--button-height);border:1px solid var(--button-border);border-radius:50%;background:var(--button-fill);color:var(--ink);font-size:24px;transition:background .18s,border-color .18s}
+.image-circle:hover,.project:hover .project-open{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.gallery-controls button{width:var(--button-height);height:var(--button-height);padding:10px;font-size:22px}
+.gallery-thumb{border-radius:10px;overflow:hidden}
+.dialog-close{z-index:2}
+.gallery-stage{padding-top:72px}
+.dialog-copy .text-link{gap:16px}
+.back-top{font-size:13px}
+.article-back{margin-bottom:25px}
+.article-next{text-align:left}
+.contact-submit{justify-content:space-between}
+.contact-submit:disabled,.gallery-controls button:disabled{opacity:.4;cursor:default;transform:none}
+.load-more[hidden]{display:none}
+@media(max-width:900px){.menu-toggle{min-height:48px;padding:8px 16px;border:1px solid var(--button-border);border-radius:var(--button-radius);background:var(--button-fill);font-size:13px;font-weight:600;gap:14px}}
+@media(max-width:640px){.filters button{padding:12px 14px;gap:8px;font-size:13px;justify-content:center}.filters button sup{margin-left:auto}.image-circle{width:var(--button-height);height:var(--button-height)}.contact-submit{gap:12px;padding-left:18px;font-size:13px}.hero-bottom .text-link{font-size:14px}.blog-preview .text-link{width:fit-content}.gallery-stage{padding-top:72px}.contact-actions{gap:10px}.article-next{border-radius:24px}}
+@media(prefers-reduced-motion:reduce){:is(.text-link,.load-more,.contact-action,.contact-submit,.blog-read,.article-back,.article-next,.back-top,.nav-contact,.studio-cta,.dialog-close,.gallery-controls button,.filters button,.image-circle,.project-open){transition:none}}

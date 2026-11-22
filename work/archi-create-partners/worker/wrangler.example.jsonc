@@ -1,0 +1,42 @@
+{
+  "name": "archi-create-partners",
+  "main": "src/worker.mjs",
+  "compatibility_date": "2026-11-17",
+  "workers_dev": true,
+  "vars": {
+    "MODE": "preview",
+    "DIALOG_ENABLED": "false",
+    "TEST_ACTOR_ID": "",
+    "GOOGLE_BRIDGE_URL": ""
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "INBOX",
+        "class_name": "PartnerInbox"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "PartnerInbox"
+      ]
+    }
+  ],
+  "triggers": {
+    "crons": [
+      "*/5 * * * *"
+    ]
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "invocation_logs": false
+    },
+    "traces": {
+      "enabled": false
+    }
+  }
+}

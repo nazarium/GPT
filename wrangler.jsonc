@@ -1,0 +1,74 @@
+{
+  "name": "archi-create",
+  "main": "cloudflare/worker.mjs",
+  "compatibility_date": "2026-11-03",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true,
+    "traces": {
+      "enabled": true
+    }
+  },
+  "triggers": {
+    "crons": [
+      "*/15 * * * *"
+    ]
+  },
+  "vars": {
+    "SOCIAL_MODE": "live",
+    "SOCIAL_ARCHIVE_HOUR": "10",
+    "BUFFER_ORGANIZATION_ID": "6af81ea1a404ca09b76b70e0",
+    "BUFFER_CHANNELS": "[{\"platform\":\"instagram\",\"id\":\"6af8240462b70b94b02a5887\",\"mode\":\"automatic\"},{\"platform\":\"facebook\",\"id\":\"6af8245862b70b94b02a5dcd\",\"mode\":\"automatic\"},{\"platform\":\"tiktok\",\"id\":\"6af8247162b70b94b02a5f26\",\"mode\":\"notification\"}]",
+    "TIKTOK_PHOTO_AUTO_VERIFIED": "false"
+  },
+  "d1_databases": [
+    {
+      "binding": "SOCIAL_DB",
+      "database_name": "archi-create-social",
+      "database_id": "eeb932fd-33cc-493f-a955-74ba3984b7ae",
+      "migrations_dir": "social/migrations"
+    }
+  ],
+  "routes": [
+    {
+      "pattern": "archi-create.com.ua/*",
+      "zone_name": "archi-create.com.ua"
+    },
+    {
+      "pattern": "www.archi-create.com.ua/*",
+      "zone_name": "archi-create.com.ua"
+    }
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none"
+  },
+  "ratelimits": [
+    {
+      "name": "CONTACT_RATE_LIMIT",
+      "namespace_id": "1",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "PORTFOLIO",
+        "class_name": "PortfolioStore"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "PortfolioStore"
+      ]
+    }
+  ]
+}

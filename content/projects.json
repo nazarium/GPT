@@ -1,0 +1,875 @@
+[
+  {
+    "id": "258299215",
+    "title": "Житлові будинки",
+    "url": "https://www.behance.net/gallery/258299215/Residential-Houses",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "01",
+    "cover": "assets/projects/258299215/1.png",
+    "images": [
+      "assets/projects/258299215/1.png",
+      "assets/projects/258299215/2.png",
+      "assets/projects/258299215/3.png",
+      "assets/projects/258299215/4.png",
+      "assets/projects/258299215/5.png",
+      "assets/projects/258299215/6.png",
+      "assets/projects/258299215/7.png",
+      "assets/projects/258299215/8.png",
+      "assets/projects/258299215/9.png"
+    ]
+  },
+  {
+    "id": "258296915",
+    "title": "Складський комплекс",
+    "url": "https://www.behance.net/gallery/258296915/Warehouse",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "02",
+    "cover": "assets/projects/258296915/1.webp",
+    "images": [
+      "assets/projects/258296915/1.webp",
+      "assets/projects/258296915/2.jpg",
+      "assets/projects/258296915/3.jpg",
+      "assets/projects/258296915/4.jpg",
+      "assets/projects/258296915/5.jpg"
+    ]
+  },
+  {
+    "id": "258296295",
+    "title": "Розважальний центр",
+    "url": "https://www.behance.net/gallery/258296295/Entertainment-Center",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "03",
+    "cover": "assets/projects/258296295/1.webp",
+    "images": [
+      "assets/projects/258296295/1.webp",
+      "assets/projects/258296295/2.webp",
+      "assets/projects/258296295/3.webp"
+    ]
+  },
+  {
+    "id": "258289477",
+    "title": "Розважально-торговельний центр",
+    "url": "https://www.behance.net/gallery/258289477/Entertainment-and-Shopping-Center",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "04",
+    "cover": "assets/projects/258289477/1.webp",
+    "images": [
+      "assets/projects/258289477/1.webp",
+      "assets/projects/258289477/2.webp"
+    ]
+  },
+  {
+    "id": "258289113",
+    "title": "Приватний будинок",
+    "url": "https://www.behance.net/gallery/258289113/Single-family-home",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "05",
+    "cover": "assets/projects/258289113/1.webp",
+    "images": [
+      "assets/projects/258289113/1.webp",
+      "assets/projects/258289113/2.jpg",
+      "assets/projects/258289113/3.jpg",
+      "assets/projects/258289113/4.jpg"
+    ]
+  },
+  {
+    "id": "258288907",
+    "title": "Реконструкція млина",
+    "url": "https://www.behance.net/gallery/258288907/Renovation-of-the-Mill",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "06",
+    "cover": "assets/projects/258288907/1.webp",
+    "images": [
+      "assets/projects/258288907/1.webp",
+      "assets/projects/258288907/2.png",
+      "assets/projects/258288907/3.png",
+      "assets/projects/258288907/4.png",
+      "assets/projects/258288907/5.png",
+      "assets/projects/258288907/6.png",
+      "assets/projects/258288907/7.png",
+      "assets/projects/258288907/8.png",
+      "assets/projects/258288907/9.png",
+      "assets/projects/258288907/10.png",
+      "assets/projects/258288907/11.png",
+      "assets/projects/258288907/12.png",
+      "assets/projects/258288907/13.png",
+      "assets/projects/258288907/14.png",
+      "assets/projects/258288907/15.png",
+      "assets/projects/258288907/16.png",
+      "assets/projects/258288907/17.png",
+      "assets/projects/258288907/18.png"
+    ]
+  },
+  {
+    "id": "258287299",
+    "title": "Бізнес-центр",
+    "url": "https://www.behance.net/gallery/258287299/Business-Center",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "07",
+    "cover": "assets/projects/258287299/1.webp",
+    "images": [
+      "assets/projects/258287299/1.webp"
+    ]
+  },
+  {
+    "id": "258286909",
+    "title": "Реконструкція швейного цеху",
+    "url": "https://www.behance.net/gallery/258286909/Reconstruction-of-the-sewing-shop",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "08",
+    "cover": "assets/projects/258286909/1.webp",
+    "images": [
+      "assets/projects/258286909/1.webp",
+      "assets/projects/258286909/2.jpg",
+      "assets/projects/258286909/3.jpg",
+      "assets/projects/258286909/4.jpg",
+      "assets/projects/258286909/5.jpg"
+    ]
+  },
+  {
+    "id": "252333411",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/252333411/Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "09",
+    "cover": "assets/projects/252333411/cover.jpg",
+    "images": [
+      "assets/projects/252333411/1.jpg",
+      "assets/projects/252333411/2.jpg",
+      "assets/projects/252333411/3.jpg",
+      "assets/projects/252333411/4.jpg",
+      "assets/projects/252333411/5.jpg",
+      "assets/projects/252333411/6.jpg",
+      "assets/projects/252333411/7.jpg",
+      "assets/projects/252333411/8.jpg",
+      "assets/projects/252333411/9.jpg"
+    ]
+  },
+  {
+    "id": "252329613",
+    "number": "10",
+    "title": "Ландшафтний дизайн особняка",
+    "label": "Ландшафтний дизайн",
+    "category": "residential",
+    "url": "https://www.behance.net/gallery/252329613/Landscape-design",
+    "cover": "assets/projects/252329613/cover.jpg",
+    "images": [
+      "assets/projects/252329613/1.jpg",
+      "assets/projects/252329613/2.jpg",
+      "assets/projects/252329613/3.jpg",
+      "assets/projects/252329613/4.jpg",
+      "assets/projects/252329613/5.jpg"
+    ]
+  },
+  {
+    "id": "252330249",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/252330249/Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "11",
+    "cover": "assets/projects/252330249/cover.jpg",
+    "images": [
+      "assets/projects/252330249/1.jpg",
+      "assets/projects/252330249/2.jpg",
+      "assets/projects/252330249/3.jpg"
+    ]
+  },
+  {
+    "id": "252329431",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/252329431/Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "12",
+    "cover": "assets/projects/252329431/cover.jpg",
+    "images": [
+      "assets/projects/252329431/1.jpg",
+      "assets/projects/252329431/2.jpg",
+      "assets/projects/252329431/3.jpg",
+      "assets/projects/252329431/4.jpg",
+      "assets/projects/252329431/5.jpg"
+    ]
+  },
+  {
+    "id": "252329337",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/252329337/Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "13",
+    "cover": "assets/projects/252329337/cover.jpg",
+    "images": [
+      "assets/projects/252329337/1.jpg",
+      "assets/projects/252329337/2.jpg",
+      "assets/projects/252329337/3.jpg",
+      "assets/projects/252329337/4.jpg",
+      "assets/projects/252329337/5.jpg"
+    ]
+  },
+  {
+    "id": "252329253",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/252329253/Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "14",
+    "cover": "assets/projects/252329253/cover.jpg",
+    "images": [
+      "assets/projects/252329253/1.jpg",
+      "assets/projects/252329253/2.jpg"
+    ]
+  },
+  {
+    "id": "252329191",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/252329191/Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "15",
+    "cover": "assets/projects/252329191/cover.jpg",
+    "images": [
+      "assets/projects/252329191/1.jpg",
+      "assets/projects/252329191/2.jpg",
+      "assets/projects/252329191/3.jpg",
+      "assets/projects/252329191/4.jpg",
+      "assets/projects/252329191/5.jpg"
+    ]
+  },
+  {
+    "id": "252329101",
+    "title": "Індивідуальний житловий будинок (реконструкція)",
+    "url": "https://www.behance.net/gallery/252329101/Residential-House-(renovation)",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "16",
+    "cover": "assets/projects/252329101/cover.jpg",
+    "images": [
+      "assets/projects/252329101/1.jpg",
+      "assets/projects/252329101/2.jpg",
+      "assets/projects/252329101/3.jpg",
+      "assets/projects/252329101/4.jpg",
+      "assets/projects/252329101/5.jpg",
+      "assets/projects/252329101/6.jpg",
+      "assets/projects/252329101/7.jpg",
+      "assets/projects/252329101/8.jpg",
+      "assets/projects/252329101/9.jpg",
+      "assets/projects/252329101/10.jpg"
+    ]
+  },
+  {
+    "id": "252329007",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/252329007/Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "17",
+    "cover": "assets/projects/252329007/cover.jpg",
+    "images": [
+      "assets/projects/252329007/1.jpg",
+      "assets/projects/252329007/2.jpg",
+      "assets/projects/252329007/3.jpg",
+      "assets/projects/252329007/4.jpg",
+      "assets/projects/252329007/5.jpg"
+    ]
+  },
+  {
+    "id": "252328897",
+    "title": "Дерев’яний індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/252328897/Wooden-Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "18",
+    "cover": "assets/projects/252328897/cover.jpg",
+    "images": [
+      "assets/projects/252328897/1.jpg",
+      "assets/projects/252328897/2.jpg",
+      "assets/projects/252328897/3.jpg",
+      "assets/projects/252328897/4.jpg",
+      "assets/projects/252328897/5.jpg",
+      "assets/projects/252328897/6.jpg",
+      "assets/projects/252328897/7.jpg"
+    ]
+  },
+  {
+    "id": "252328763",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/252328763/Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "19",
+    "cover": "assets/projects/252328763/cover.jpg",
+    "images": [
+      "assets/projects/252328763/1.jpg",
+      "assets/projects/252328763/2.jpg",
+      "assets/projects/252328763/3.jpg",
+      "assets/projects/252328763/4.jpg"
+    ]
+  },
+  {
+    "id": "252328583",
+    "title": "Індивідуальний житловий будинок (дуплекс)",
+    "url": "https://www.behance.net/gallery/252328583/Residential-House-(duplex)",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "20",
+    "cover": "assets/projects/252328583/cover.jpg",
+    "images": [
+      "assets/projects/252328583/1.jpg",
+      "assets/projects/252328583/2.jpg",
+      "assets/projects/252328583/3.jpg",
+      "assets/projects/252328583/4.jpg",
+      "assets/projects/252328583/5.jpg",
+      "assets/projects/252328583/6.jpg",
+      "assets/projects/252328583/7.jpg",
+      "assets/projects/252328583/8.jpg",
+      "assets/projects/252328583/9.jpg",
+      "assets/projects/252328583/10.jpg",
+      "assets/projects/252328583/11.jpg",
+      "assets/projects/252328583/12.jpg"
+    ]
+  },
+  {
+    "id": "252328367",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/252328367/Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "21",
+    "cover": "assets/projects/252328367/cover.jpg",
+    "images": [
+      "assets/projects/252328367/1.jpg",
+      "assets/projects/252328367/2.jpg",
+      "assets/projects/252328367/3.jpg",
+      "assets/projects/252328367/4.jpg",
+      "assets/projects/252328367/5.jpg",
+      "assets/projects/252328367/6.jpg",
+      "assets/projects/252328367/7.jpg",
+      "assets/projects/252328367/8.jpg",
+      "assets/projects/252328367/9.jpg"
+    ]
+  },
+  {
+    "id": "196004727",
+    "title": "Дуплекс — зблоковані житлові будинки",
+    "url": "https://www.behance.net/gallery/196004727/Duplex-TwinHouses",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "22",
+    "cover": "assets/projects/196004727/cover.jpg",
+    "images": [
+      "assets/projects/196004727/1.jpg",
+      "assets/projects/196004727/2.jpg",
+      "assets/projects/196004727/3.jpg",
+      "assets/projects/196004727/4.jpg"
+    ]
+  },
+  {
+    "id": "191527601",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/191527601/residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "23",
+    "cover": "assets/projects/191527601/cover.jpg",
+    "images": [
+      "assets/projects/191527601/1.jpg",
+      "assets/projects/191527601/2.jpg"
+    ]
+  },
+  {
+    "id": "191527149",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/191527149/Residential-House",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "24",
+    "cover": "assets/projects/191527149/cover.jpg",
+    "images": [
+      "assets/projects/191527149/1.jpg",
+      "assets/projects/191527149/2.jpg",
+      "assets/projects/191527149/3.jpg"
+    ]
+  },
+  {
+    "id": "182565065",
+    "title": "Торговельний центр",
+    "url": "https://www.behance.net/gallery/182565065/Shopping-Center",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "25",
+    "cover": "assets/projects/182565065/cover.jpg",
+    "images": [
+      "assets/projects/182565065/1.jpg",
+      "assets/projects/182565065/2.jpg",
+      "assets/projects/182565065/3.jpg",
+      "assets/projects/182565065/4.jpg"
+    ]
+  },
+  {
+    "id": "182564797",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/182564797/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "26",
+    "cover": "assets/projects/182564797/cover.jpg",
+    "images": [
+      "assets/projects/182564797/1.jpg",
+      "assets/projects/182564797/2.jpg",
+      "assets/projects/182564797/3.jpg",
+      "assets/projects/182564797/4.jpg"
+    ]
+  },
+  {
+    "id": "179473417",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/179473417/residental-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "27",
+    "cover": "assets/projects/179473417/cover.jpg",
+    "images": [
+      "assets/projects/179473417/1.jpg",
+      "assets/projects/179473417/2.jpg",
+      "assets/projects/179473417/3.jpg"
+    ]
+  },
+  {
+    "id": "179473069",
+    "title": "Склад",
+    "url": "https://www.behance.net/gallery/179473069/warehouse",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "28",
+    "cover": "assets/projects/179473069/cover.jpg",
+    "images": [
+      "assets/projects/179473069/1.jpg",
+      "assets/projects/179473069/2.jpg",
+      "assets/projects/179473069/3.jpg",
+      "assets/projects/179473069/4.jpg",
+      "assets/projects/179473069/5.jpg",
+      "assets/projects/179473069/6.jpg",
+      "assets/projects/179473069/7.jpg",
+      "assets/projects/179473069/8.jpg"
+    ]
+  },
+  {
+    "id": "179472921",
+    "title": "Житловий будинок",
+    "url": "https://www.behance.net/gallery/179472921/house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "29",
+    "cover": "assets/projects/179472921/cover.jpg",
+    "images": [
+      "assets/projects/179472921/1.jpg",
+      "assets/projects/179472921/2.jpg",
+      "assets/projects/179472921/3.jpg",
+      "assets/projects/179472921/4.jpg",
+      "assets/projects/179472921/5.jpg"
+    ]
+  },
+  {
+    "id": "179472485",
+    "title": "Сучасний житловий будинок",
+    "url": "https://www.behance.net/gallery/179472485/modern-home",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "30",
+    "cover": "assets/projects/179472485/cover.jpg",
+    "images": [
+      "assets/projects/179472485/1.jpg",
+      "assets/projects/179472485/2.jpg"
+    ]
+  },
+  {
+    "id": "179472281",
+    "title": "Житловий будинок",
+    "url": "https://www.behance.net/gallery/179472281/Home",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "31",
+    "cover": "assets/projects/179472281/cover.jpg",
+    "images": [
+      "assets/projects/179472281/1.jpg",
+      "assets/projects/179472281/2.jpg",
+      "assets/projects/179472281/3.jpg"
+    ]
+  },
+  {
+    "id": "165981413",
+    "title": "2x2",
+    "url": "https://www.behance.net/gallery/165981413/2x2",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "32",
+    "cover": "assets/projects/165981413/cover.jpg",
+    "images": [
+      "assets/projects/165981413/1.jpg"
+    ]
+  },
+  {
+    "id": "165979299",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/165979299/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "33",
+    "cover": "assets/projects/165979299/cover.jpg",
+    "images": [
+      "assets/projects/165979299/1.jpg",
+      "assets/projects/165979299/2.jpg",
+      "assets/projects/165979299/3.jpg"
+    ]
+  },
+  {
+    "id": "151296231",
+    "title": "Садовий будинок",
+    "url": "https://www.behance.net/gallery/151296231/garden-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "34",
+    "cover": "assets/projects/151296231/cover.jpg",
+    "images": [
+      "assets/projects/151296231/1.jpg",
+      "assets/projects/151296231/2.jpg",
+      "assets/projects/151296231/3.jpg",
+      "assets/projects/151296231/4.jpg",
+      "assets/projects/151296231/5.jpg"
+    ]
+  },
+  {
+    "id": "151295787",
+    "title": "Склад",
+    "url": "https://www.behance.net/gallery/151295787/warehouse",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "35",
+    "cover": "assets/projects/151295787/cover.jpg",
+    "images": [
+      "assets/projects/151295787/1.jpg",
+      "assets/projects/151295787/2.jpg",
+      "assets/projects/151295787/3.jpg",
+      "assets/projects/151295787/4.jpg",
+      "assets/projects/151295787/5.jpg"
+    ]
+  },
+  {
+    "id": "143688339",
+    "title": "Склад",
+    "url": "https://www.behance.net/gallery/143688339/warehouse",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "36",
+    "cover": "assets/projects/143688339/cover.jpg",
+    "images": [
+      "assets/projects/143688339/1.jpg",
+      "assets/projects/143688339/2.jpg",
+      "assets/projects/143688339/3.jpg",
+      "assets/projects/143688339/4.jpg",
+      "assets/projects/143688339/5.jpg"
+    ]
+  },
+  {
+    "id": "140232879",
+    "title": "Багатоквартирний житловий будинок",
+    "url": "https://www.behance.net/gallery/140232879/Residential-apartment-building",
+    "category": "apartments",
+    "label": "Житлова архітектура",
+    "number": "37",
+    "cover": "assets/projects/140232879/cover.jpg",
+    "images": [
+      "assets/projects/140232879/1.jpg"
+    ]
+  },
+  {
+    "id": "140232687",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140232687/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "38",
+    "cover": "assets/projects/140232687/cover.jpg",
+    "images": [
+      "assets/projects/140232687/1.jpg",
+      "assets/projects/140232687/2.jpg",
+      "assets/projects/140232687/3.jpg",
+      "assets/projects/140232687/4.jpg"
+    ]
+  },
+  {
+    "id": "140232481",
+    "title": "Логістичний центр",
+    "url": "https://www.behance.net/gallery/140232481/Logistics-center",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "39",
+    "cover": "assets/projects/140232481/cover.jpg",
+    "images": [
+      "assets/projects/140232481/1.jpg",
+      "assets/projects/140232481/2.jpg",
+      "assets/projects/140232481/3.jpg",
+      "assets/projects/140232481/4.jpg",
+      "assets/projects/140232481/5.jpg",
+      "assets/projects/140232481/6.jpg"
+    ]
+  },
+  {
+    "id": "140231975",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140231975/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "40",
+    "cover": "assets/projects/140231975/cover.jpg",
+    "images": [
+      "assets/projects/140231975/1.jpg",
+      "assets/projects/140231975/2.jpg",
+      "assets/projects/140231975/3.jpg"
+    ]
+  },
+  {
+    "id": "140231791",
+    "title": "Гостьовий будинок (реконструкція)",
+    "url": "https://www.behance.net/gallery/140231791/Guest-house-(reconstruction)",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "41",
+    "cover": "assets/projects/140231791/cover.jpg",
+    "images": [
+      "assets/projects/140231791/1.jpg",
+      "assets/projects/140231791/2.jpg",
+      "assets/projects/140231791/3.jpg"
+    ]
+  },
+  {
+    "id": "140231675",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140231675/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "42",
+    "cover": "assets/projects/140231675/cover.jpg",
+    "images": [
+      "assets/projects/140231675/1.jpg",
+      "assets/projects/140231675/2.jpg",
+      "assets/projects/140231675/3.jpg",
+      "assets/projects/140231675/4.jpg"
+    ]
+  },
+  {
+    "id": "140231563",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140231563/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "43",
+    "cover": "assets/projects/140231563/cover.jpg",
+    "images": [
+      "assets/projects/140231563/1.jpg",
+      "assets/projects/140231563/2.jpg",
+      "assets/projects/140231563/3.jpg"
+    ]
+  },
+  {
+    "id": "140231399",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140231399/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "44",
+    "cover": "assets/projects/140231399/cover.jpg",
+    "images": [
+      "assets/projects/140231399/1.jpg",
+      "assets/projects/140231399/2.jpg",
+      "assets/projects/140231399/3.jpg",
+      "assets/projects/140231399/4.jpg"
+    ]
+  },
+  {
+    "id": "140231273",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140231273/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "45",
+    "cover": "assets/projects/140231273/cover.jpg",
+    "images": [
+      "assets/projects/140231273/1.jpg",
+      "assets/projects/140231273/2.jpg",
+      "assets/projects/140231273/3.jpg",
+      "assets/projects/140231273/4.jpg"
+    ]
+  },
+  {
+    "id": "140231161",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140231161/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "46",
+    "cover": "assets/projects/140231161/cover.jpg",
+    "images": [
+      "assets/projects/140231161/1.jpg",
+      "assets/projects/140231161/2.jpg",
+      "assets/projects/140231161/3.jpg",
+      "assets/projects/140231161/4.jpg",
+      "assets/projects/140231161/5.jpg",
+      "assets/projects/140231161/6.jpg"
+    ]
+  },
+  {
+    "id": "140231063",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140231063/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "47",
+    "cover": "assets/projects/140231063/cover.jpg",
+    "images": [
+      "assets/projects/140231063/1.jpg",
+      "assets/projects/140231063/2.jpg",
+      "assets/projects/140231063/3.jpg",
+      "assets/projects/140231063/4.jpg",
+      "assets/projects/140231063/5.jpg",
+      "assets/projects/140231063/6.jpg"
+    ]
+  },
+  {
+    "id": "140230961",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140230961/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "48",
+    "cover": "assets/projects/140230961/cover.jpg",
+    "images": [
+      "assets/projects/140230961/1.jpg",
+      "assets/projects/140230961/2.jpg",
+      "assets/projects/140230961/3.jpg"
+    ]
+  },
+  {
+    "id": "140230851",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140230851/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "49",
+    "cover": "assets/projects/140230851/cover.jpg",
+    "images": [
+      "assets/projects/140230851/1.jpg",
+      "assets/projects/140230851/2.jpg",
+      "assets/projects/140230851/3.jpg",
+      "assets/projects/140230851/4.jpg"
+    ]
+  },
+  {
+    "id": "140230743",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140230743/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "50",
+    "cover": "assets/projects/140230743/cover.jpg",
+    "images": [
+      "assets/projects/140230743/1.jpg",
+      "assets/projects/140230743/2.jpg",
+      "assets/projects/140230743/3.jpg",
+      "assets/projects/140230743/4.jpg",
+      "assets/projects/140230743/5.jpg"
+    ]
+  },
+  {
+    "id": "140230537",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140230537/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "51",
+    "cover": "assets/projects/140230537/cover.jpg",
+    "images": [
+      "assets/projects/140230537/1.jpg",
+      "assets/projects/140230537/2.jpg"
+    ]
+  },
+  {
+    "id": "140230327",
+    "title": "Індивідуальний житловий будинок",
+    "url": "https://www.behance.net/gallery/140230327/Residential-house",
+    "category": "residential",
+    "label": "Житлова архітектура",
+    "number": "52",
+    "cover": "assets/projects/140230327/cover.jpg",
+    "images": [
+      "assets/projects/140230327/1.jpg",
+      "assets/projects/140230327/2.jpg",
+      "assets/projects/140230327/3.jpg",
+      "assets/projects/140230327/4.jpg",
+      "assets/projects/140230327/5.jpg"
+    ]
+  },
+  {
+    "id": "140229787",
+    "title": "Бізнес-центр (концепція, 2015)",
+    "url": "https://www.behance.net/gallery/140229787/Business-center-(concept-2015)",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "53",
+    "cover": "assets/projects/140229787/cover.jpg",
+    "images": [
+      "assets/projects/140229787/1.jpg"
+    ]
+  },
+  {
+    "id": "140229341",
+    "title": "Мінімаркет",
+    "url": "https://www.behance.net/gallery/140229341/Minimarket",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "54",
+    "cover": "assets/projects/140229341/cover.jpg",
+    "images": [
+      "assets/projects/140229341/1.jpg",
+      "assets/projects/140229341/2.jpg"
+    ]
+  },
+  {
+    "id": "140229047",
+    "title": "Бізнес-центр (реконструкція)",
+    "url": "https://www.behance.net/gallery/140229047/Business-center-(reconstruction)",
+    "category": "commercial",
+    "label": "Комерційна архітектура",
+    "number": "55",
+    "cover": "assets/projects/140229047/cover.jpg",
+    "images": [
+      "assets/projects/140229047/1.jpg",
+      "assets/projects/140229047/2.jpg",
+      "assets/projects/140229047/3.jpg"
+    ]
+  },
+  {
+    "id": "140228407",
+    "title": "Багатоквартирний житловий будинок, Кам’янець-Подільський, Україна",
+    "url": "https://www.behance.net/gallery/140228407/Residential-apartment-building-Kamianets-Podilskyi-Ua",
+    "category": "apartments",
+    "label": "Житлова архітектура",
+    "number": "56",
+    "cover": "assets/projects/140228407/cover.jpg",
+    "images": [
+      "assets/projects/140228407/1.jpg",
+      "assets/projects/140228407/2.jpg",
+      "assets/projects/140228407/3.jpg"
+    ]
+  }
+]

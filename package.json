@@ -1,0 +1,1 @@
+{"name":"archi-create","private":true,"type":"module","scripts":{"build":"node scripts/build.mjs","preview":"node scripts/preview.mjs","test:social":"node --test social/test/*.test.mjs","social:dry-run":"node social/scripts/dry-run.mjs"},"dependencies":{"react":"19.2.0","react-dom":"19.2.0"},"devDependencies":{"esbuild":"0.25.12","wrangler":"4.161.0"}}
