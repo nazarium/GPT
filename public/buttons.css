@@ -32,3 +32,66 @@ a.studio-cta{font-size:16px}
 @media(max-width:900px){.menu-toggle{min-height:48px;padding:8px 16px;border:1px solid var(--button-border);border-radius:var(--button-radius);background:var(--button-fill);font-size:13px;font-weight:600;gap:14px}}
 @media(max-width:640px){.filters button{padding:12px 14px;gap:8px;font-size:13px;justify-content:center}.filters button sup{margin-left:auto}.image-circle{width:var(--button-height);height:var(--button-height)}.contact-submit{gap:12px;padding-left:18px;font-size:13px}.hero-bottom .text-link{font-size:14px}.blog-preview .text-link{width:fit-content}.gallery-stage{padding-top:72px}.contact-actions{gap:10px}.article-next{border-radius:24px}}
 @media(prefers-reduced-motion:reduce){:is(.text-link,.load-more,.contact-action,.contact-submit,.blog-read,.article-back,.article-next,.back-top,.nav-contact,.studio-cta,.dialog-close,.gallery-controls button,.filters button,.image-circle,.project-open){transition:none}}
+
+/* AirJelly-inspired navigation, using the existing Archi-Create identity. */
+.site-header{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr auto 1fr;gap:24px;height:88px;background:var(--paper);border-bottom:1px solid var(--line)}
+.site-header-brand{justify-self:start;min-width:0}.site-header-brand .logo{font-size:16px;letter-spacing:.05em;gap:10px}.site-header-brand .logo img{width:72px;height:48px}
+.site-header .primary-navigation{position:static;display:flex;align-items:center;justify-content:center;gap:8px;padding:0;border:0;background:transparent;flex-direction:row;font-size:16px}
+.site-header .site-nav-link{display:inline-flex;align-items:center;gap:7px;min-height:48px;padding:12px 14px;border:0;background:transparent;border-radius:999px;color:var(--ink);font:inherit;font-weight:600;white-space:nowrap;transition:color .18s,background .18s}
+.site-header .site-nav-link:hover,.site-header .site-nav-link[aria-current="page"]{color:var(--accent);background:var(--button-fill)}
+.site-header .site-desktop-contact{justify-self:end;margin:0;min-height:46px;font-size:14px;gap:16px}.site-header .site-mobile-contact,.site-header .site-menu-toggle{display:none}
+@media(min-width:1001px) and (max-width:1150px){.site-header{gap:12px}.site-header .primary-navigation{gap:0;font-size:15px}.site-header .site-nav-link{padding-inline:10px}.site-header-brand .logo{font-size:13px;gap:4px}.site-header-brand .logo img{width:60px}}
+@media(max-width:1000px){
+ .site-header{grid-template-columns:1fr auto;height:80px;gap:16px}.site-header .site-desktop-contact{display:none}
+ .site-header .site-menu-toggle{display:inline-flex;align-items:center;justify-content:center;gap:16px;min-height:46px;padding:10px 16px;border:1px solid var(--button-border);border-radius:999px;background:var(--button-fill);color:var(--ink);font-size:14px;font-weight:600}
+ .site-menu-toggle svg{width:22px;height:22px}.site-header .primary-navigation{display:none;position:absolute;top:calc(100% + 8px);left:var(--page-gutter);right:var(--page-gutter);padding:14px;max-height:calc(100dvh - 110px);overflow:auto;border:1px solid var(--line);border-radius:24px;background:var(--paper);box-shadow:0 18px 40px #0003;font-size:18px}
+ .site-header .primary-navigation.is-open{display:flex;flex-direction:column;align-items:stretch;gap:4px}
+ .site-header .site-nav-link{width:100%;justify-content:space-between;border-radius:16px;min-height:52px;padding:14px 16px}
+ .site-header .site-mobile-contact{display:flex;margin:12px 0 0;font-size:16px;justify-content:space-between}
+}
+@media(max-width:400px){.site-header-brand .logo{font-size:12px;gap:4px}.site-header-brand .logo img{width:55px}.site-header .site-menu-toggle{padding-inline:13px;gap:10px}}
+@media(prefers-reduced-motion:reduce){.site-header .site-nav-link{transition:none}}
+
+/* The full navigation becomes a floating capsule after the first scroll. */
+.site-header{isolation:isolate;transition:background-color .22s,border-color .22s,padding .22s}
+.site-header::before{content:'';position:absolute;inset:10px var(--page-gutter);z-index:-1;border:1px solid var(--line);border-radius:999px;background:var(--paper);opacity:0;transform:translateY(-5px);pointer-events:none;transition:opacity .22s,transform .22s,box-shadow .22s}
+.site-header.is-scrolled{background:transparent;border-bottom-color:transparent;padding-inline:calc(var(--page-gutter) + 18px)}
+.site-header.is-scrolled::before{opacity:1;transform:translateY(0);box-shadow:0 10px 28px #0003}
+.site-header.is-scrolled .site-header-brand .logo img{width:60px;height:44px}
+.site-header.is-scrolled .site-header-brand .logo{font-size:14px}
+.site-header.is-scrolled .site-desktop-contact{min-height:44px;padding-block:5px}
+@media(max-width:1000px){
+ .site-header::before{inset:8px 12px}
+ .site-header.is-scrolled{padding-inline:calc(var(--page-gutter) + 6px)}
+ .site-header.is-scrolled .site-header-brand .logo img{width:55px;height:40px}
+ .site-header.is-scrolled .site-header-brand .logo{font-size:13px}
+ .site-header.is-scrolled .site-menu-toggle{min-height:42px;padding-block:8px}
+}
+@media(max-width:400px){.site-header.is-scrolled .site-header-brand .logo{font-size:12px}.site-header.is-scrolled .site-header-brand .logo img{width:48px}}
+@media(prefers-reduced-motion:reduce){.site-header,.site-header::before{transition:none}}
+
+/* Selected concept 1: quiet links, a fine accent line, outlined contacts. */
+.header-minimal .site-nav-link{position:relative;border-radius:0;background:transparent;text-decoration:none}
+.header-minimal .site-nav-link::after{content:'';position:absolute;left:14px;right:14px;bottom:4px;height:4px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .2s ease-out}
+.header-minimal .site-nav-link:hover,.header-minimal .site-nav-link[aria-current="location"]{background:transparent;color:var(--ink);text-decoration:none}
+.header-minimal .site-nav-link:is(:hover,:focus-visible)::after{transform:scaleX(1)}
+.header-minimal .nav-contact{background:transparent;color:var(--ink);border:1px solid var(--button-border);padding:7px 14px 7px 20px;gap:18px}
+.header-minimal .nav-contact:hover{background:var(--button-fill);color:var(--ink);border-color:var(--muted)}
+.header-minimal .nav-contact>span{background:transparent;color:var(--accent);font-size:24px;width:28px;height:28px}
+@media(max-width:1000px){
+ .header-minimal .site-nav-link{width:fit-content;max-width:100%;border:0;border-radius:0;background:transparent;padding:14px 16px;overflow-wrap:anywhere}
+ .header-minimal .site-nav-link::after{display:block;left:16px;right:16px}
+ .header-minimal .site-nav-link:hover{background:transparent;text-decoration:none}
+ .header-minimal .site-mobile-contact{margin:0;min-height:52px;font-size:inherit;font-weight:600;justify-content:flex-start}
+}
+@media(prefers-reduced-motion:reduce){.header-minimal .site-nav-link::after{transition:none}}
+
+/* A single moving capsule follows the visible landing-page section. */
+.site-slide-highlight{position:absolute;left:0;top:0;z-index:1;border-radius:999px;background:var(--button-fill);pointer-events:none;transition:transform .42s cubic-bezier(.22,1,.36,1),width .42s cubic-bezier(.22,1,.36,1),height .42s cubic-bezier(.22,1,.36,1),opacity .18s;will-change:transform}
+.header-minimal [data-nav-section],.header-minimal .site-menu-toggle,.header-minimal .site-header-brand{position:relative;z-index:2}
+.header-minimal [data-nav-section][aria-current="location"],.header-minimal [data-nav-section][aria-current="location"]:hover{color:var(--ink);background:transparent;text-decoration:none}
+.header-minimal .nav-contact[aria-current="location"]{border-color:transparent}
+.header-minimal .site-mobile-contact[aria-current="location"]{border:0}
+@media(prefers-reduced-motion:reduce){.site-slide-highlight{transition:none}}
+
+@media(max-width:1000px){.header-minimal .primary-navigation{z-index:auto}}

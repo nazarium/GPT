@@ -1,1 +1,26 @@
-{"name":"archi-create","private":true,"type":"module","scripts":{"build":"node scripts/build.mjs","preview":"node scripts/preview.mjs","test:social":"node --test social/test/*.test.mjs","social:dry-run":"node social/scripts/dry-run.mjs"},"dependencies":{"react":"19.2.0","react-dom":"19.2.0"},"devDependencies":{"esbuild":"0.25.12","wrangler":"4.161.0"}}
+{
+  "name": "archi-create",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/preview.mjs",
+    "test:social": "node --test social/test/*.test.mjs",
+    "social:dry-run": "node social/scripts/dry-run.mjs",
+    "build:admin": "node scripts/build-admin.mjs",
+    "check": "node scripts/check-admin.mjs",
+    "deploy": "pnpm build && pnpm build:admin && wrangler deploy"
+  },
+  "dependencies": {
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "wrangler": "4.161.0"
+  },
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22"
+  }
+}

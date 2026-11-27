@@ -8,7 +8,7 @@ export function HomeContactsEditor({ api }) {
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
   const [conflict, setConflict] = useState(false);
-  const dirty = !!draft && (draft.phone !== saved.phone || draft.telegram !== saved.telegram || draft.email !== saved.email || draft.address !== saved.address);
+  const dirty = !!draft && (draft.partnerBot !== saved.partnerBot || draft.phone !== saved.phone || draft.telegram !== saved.telegram || draft.email !== saved.email || draft.address !== saved.address);
   useUnsavedChanges(dirty);
 
   async function run(action) {
@@ -56,6 +56,9 @@ export function HomeContactsEditor({ api }) {
         <label>Telegram<input required maxLength={64} placeholder="@ім’я або https://t.me/username"
           autoCapitalize="none" spellCheck={false} value={draft.telegram}
           onChange={event => edit('telegram', event.target.value)} /></label>
+        <label>Telegram-бот для менеджерів<input type="url" required maxLength={256}
+          placeholder="https://t.me/YourBot?start=website" autoCapitalize="none" spellCheck={false}
+          value={draft.partnerBot ?? ''} onChange={event => edit('partnerBot', event.target.value)} /></label>
         <label>Електронна пошта<input type="email" required maxLength={254} placeholder="name@example.com"
           autoCapitalize="none" spellCheck={false} value={draft.email} onChange={event => edit('email', event.target.value)} /></label>
       </div>

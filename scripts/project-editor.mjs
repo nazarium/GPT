@@ -37,7 +37,11 @@ async function saveProject(input) {
     throw new Error('Заповніть назву, тип і категорію.');
   }
   const url = input.url?.trim() || '';
-  if (url && new URL(url).protocol !== 'https:') throw new Error('Посилання має починатися з https://.');
+  if (url) {
+    let parsed;
+    try { parsed = new URL(url); } catch { /* Report the same validation error for malformed URLs. */ }
+    if (parsed?.protocol !== 'https:') throw new Error('Посилання має починатися з https://.');
+  }
   if (!Array.isArray(input.images) || input.images.length < 1 || input.images.length > 40) {
     throw new Error('Додайте від 1 до 40 фото галереї.');
   }
@@ -64,7 +68,7 @@ export async function projectEditor(request, response, path, origin) {
   try {
     if (request.method === 'GET' && path === '/__local/projects') return json(200, (await readProjects()).map(project => ({ revision: 0, ...project })));
     if (request.method !== 'POST' || request.headers.origin !== origin) return json(403, { error: 'Доступ лише з локальної адмінпанелі.' });
-    if (path === '/__local/projects' && request.headers['content-type'] === 'application/json') {
+    if (path === '/__local/projects' && request.headers['content-type']?.split(';')[0].trim().toLowerCase() === 'application/json') {
       const input = JSON.parse(await body(request, 64 * 1024));
       const task = pending.then(() => saveProject(input));
       pending = task.catch(() => {});

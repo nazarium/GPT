@@ -1,6 +1,6 @@
 const tags = new Set(['p', 'div', 'br', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote', 'strong', 'b', 'em', 'i', 'u', 's', 'a', 'span', 'small', 'cite']);
 import { youtubeEmbedUrl } from '../src/youtube.mjs';
-const discarded = new Set(['script', 'style', 'button', 'object', 'embed', 'svg', 'math', 'template']);
+const discarded = new Set(['script', 'style', 'button', 'object', 'embed', 'svg', 'math', 'template', 'textarea', 'title', 'xmp', 'noembed', 'noframes', 'noscript', 'plaintext', 'listing']);
 
 export async function sanitizeArticleHtml(html, allowEmpty = false, baseUrl = 'https://archi-create.com.ua/blog/') {
   if (typeof html !== 'string' || html.length > 80000) throw new Error('Текст завеликий або має некоректний формат.');

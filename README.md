@@ -19,8 +19,8 @@ pnpm preview
 Додайте в Worker `archi-create` два секрети через Cloudflare Dashboard → Settings → Variables and Secrets або з термінала:
 
 ```sh
-pnpm dlx wrangler@4.156.1 secret put TELEGRAM_BOT_TOKEN
-pnpm dlx wrangler@4.156.1 secret put TELEGRAM_CHAT_ID
+pnpm exec wrangler secret put TELEGRAM_BOT_TOKEN
+pnpm exec wrangler secret put TELEGRAM_CHAT_ID
 ```
 
 Для локальної перевірки доставки потрібен `wrangler dev` і ці ж значення у локальному файлі `.dev.vars`, який не слід додавати до Git. Статичний перегляд через `pnpm preview` не запускає API форми.
@@ -39,9 +39,9 @@ node scripts/preview.mjs --admin
 ```sh
 pnpm build
 node scripts/build-admin.mjs
-pnpm dlx wrangler@4.156.1 login
-pnpm dlx wrangler@4.156.1 deploy
-pnpm dlx wrangler@4.156.1 secret put ADMIN_PASSWORD
+pnpm exec wrangler login
+pnpm exec wrangler deploy
+pnpm exec wrangler secret put ADMIN_PASSWORD
 ```
 
 Виберіть унікальний пароль із 24 або більше ASCII-символів. Вхід на `/admin` використовує ім’я `admin`. Хмарний редактор зберігає зміни у Durable Object, і портфоліо показує їх після оновлення сторінки без повторної збірки.

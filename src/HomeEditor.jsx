@@ -1,3 +1,4 @@
+import {SiteToolsEditor} from './SiteToolsEditor.jsx';
 import { useEffect, useState } from 'react';
 import { useUnsavedChanges } from './useUnsavedChanges.js';
 import { LegalEditor } from './LegalEditor.jsx';
@@ -11,11 +12,11 @@ import { HomeTypographyEditor } from './HomeTypographyEditor.jsx';
 import { moveItem } from './reorder.mjs';
 import { defaultHeroCaptionPosition, heroCaptionPositions, heroTransitions, minHeroInterval, maxHeroInterval, isHeroInterval } from './hero-settings.mjs';
 
-const homeTabs=[['carousel','Карусель'],['order','Портфоліо й статті'],['texts','Тексти'],['contacts','Контакти'],['appearance','Оформлення'],['legal','Правові сторінки'],['sharing','Прев’ю посилання']];
+const homeTabs=[['carousel','Карусель'],['order','Портфоліо й статті'],['texts','Тексти'],['contacts','Контакти'],['appearance','Оформлення'],['legal','Правові сторінки'],['sharing','Прев’ю посилання'],['analytics','Аналітика'],['backups','Резервні копії'],['security','Безпека']];
 
 function HomeTabIcon({name}) {
   const paths={carousel:'M3 4h18v16H3V4Zm0 11 5-5 5 5 3-3 5 5M7 7h.01',order:'M9 5h12M9 12h12M9 19h12M3 4h2v3M3 11h2v3M3 18h2v3',texts:'M4 4h16M12 4v16M8 20h8',contacts:'M4 3h16v18H4V3Zm4 4h8M8 11h8M8 15h5',appearance:'M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1-3.7 1.5 1.5 0 0 1 1-2.8h2a4 4 0 0 0 4-4C21 6 17 3 12 3ZM7 9h.01M10 6h.01M15 7h.01M6 13h.01',legal:'M6 3h9l4 4v14H6V3Zm9 0v5h4M9 12h7M9 16h7',sharing:'M8 12 16 7M8 12l8 5M7 12a2 2 0 1 0-4 0 2 2 0 1 0 4 0Zm13-6a2 2 0 1 0-4 0 2 2 0 1 0 4 0Zm0 12a2 2 0 1 0-4 0 2 2 0 1 0 4 0Z'};
-  return <svg className="editor-tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={paths[name]}/></svg>;
+  return <svg className="editor-tab-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={paths[name]??'M4 4h16v16H4Z M8 16V9 M12 16V6 M16 16v-4'}/></svg>;
 }
 
 const slideDragType = 'application/x-archi-hero-slide';
@@ -186,7 +187,7 @@ export function HomeEditor({ api }) {
     </section>
     {preview && <HeroPreview slides={draft.slides}
       timing={{ transition: draft.transition, intervalSeconds: Number(draft.intervalSeconds) }} onClose={() => setPreview(false)} />}
-    <section className="home-editor-panel" role="tabpanel" id="home-panel-order" aria-labelledby="home-tab-order" hidden={activeTab!=='order'}><HomeOrderEditor api={api} /></section>
+    <section className="home-editor-panel" role="tabpanel" id="home-panel-order" aria-labelledby="home-tab-order" hidden={activeTab!=='order'}><HomeOrderEditor api={api} /><SiteToolsEditor api={api} section="categories" /></section>
     <section className="home-editor-panel" role="tabpanel" id="home-panel-texts" aria-labelledby="home-tab-texts" hidden={activeTab!=='texts'}><HomeTextsEditor api={api} /></section>
     <section className="home-editor-panel" role="tabpanel" id="home-panel-contacts" aria-labelledby="home-tab-contacts" hidden={activeTab!=='contacts'}><HomeContactsEditor api={api} /></section>
     <section className="home-editor-panel" role="tabpanel" id="home-panel-appearance" aria-labelledby="home-tab-appearance" hidden={activeTab!=='appearance'}><section className="home-appearance" aria-label="Кольори та шрифти"><HomePaletteEditor api={api} /><HomeTypographyEditor api={api} /></section></section>
@@ -198,5 +199,6 @@ export function HomeEditor({ api }) {
       </section>
     </section>
     <section className="home-editor-panel" role="tabpanel" id="home-panel-sharing" aria-labelledby="home-tab-sharing" hidden={activeTab!=='sharing'}><HomeSocialEditor api={api} /></section>
+    {['analytics','backups','security'].map(id=><section key={id} role="tabpanel" id={'home-panel-'+id} aria-labelledby={'home-tab-'+id} hidden={activeTab!==id}>{activeTab===id&&<SiteToolsEditor api={api} section={id}/>}</section>)}
   </main>;
 }

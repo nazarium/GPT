@@ -1,3 +1,4 @@
+import {SiteHeader} from './SiteHeader.jsx';
 import { useEffect, useRef, useState } from 'react';
 import { Portfolio } from './Portfolio.jsx';
 import { ProjectPage } from './ProjectPage.jsx';
@@ -11,22 +12,6 @@ function Logo({ home, prefix }) {
     <img src={prefix + 'assets/logo-original.png'} alt="" width="1921" height="1081" />
     <span className="brand-name">ARCHI-CREATE</span>
   </a>;
-}
-
-function Header({ home, prefix, blog }) {
-  const [open, setOpen] = useState(false);
-  const anchor = id => (home ? '' : prefix + 'index.html') + '#' + id;
-  return <header className={home ? 'header header-home' : 'header'}>
-    <Logo home={home} prefix={prefix} />
-    <button type="button" className="menu-toggle" aria-expanded={open} aria-controls="navigation" onClick={() => setOpen(value => !value)}>Меню <span>＋</span></button>
-    <nav id="navigation" className={open ? 'open' : undefined} aria-label="Головна навігація" onClick={() => setOpen(false)}>
-      <a href={anchor('projects')}>Проєкти</a>
-      <a href={anchor('studio')}>Студія</a>
-      <a href={anchor('approach')}>Підхід</a>
-      <a href={prefix + 'blog.html'} aria-current={blog ? 'page' : undefined}>Блог</a>
-      <a href={anchor('contact')} className="nav-contact">Поговорімо <span>↗</span></a>
-    </nav>
-  </header>;
 }
 
 function Footer({ home, prefix, buildYear }) {
@@ -51,7 +36,7 @@ function Home({ page }) {
   } = page;
   return <main>
     <Hero slides={page.heroSlides} timing={page.heroTiming} />
-    <Portfolio heading={page.portfolioHeading} initialCatalog={page.projects} pageSize={page.projectCount} />
+    <Portfolio categoryLabels={page.projectCategories} heading={page.portfolioHeading} initialCatalog={page.projects} pageSize={page.projectCount} />
     <section id="studio" className="studio section">
       <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: page.studio }} />
       <img className="studio-panorama" src={'/' + studioPhoto} alt="Архітектурний проєкт Archi-Create" loading="lazy" />
@@ -70,7 +55,7 @@ export function App({ page }) {
   const home = page.kind === 'home';
   const prefix = page.preview || page.kind === 'project' || page.kind === 'article' ? '/' : '';
   return <>
-    <Header home={home} prefix={prefix} blog={page.kind === 'blog' || page.kind === 'article'} />
+    <SiteHeader logo={<Logo home={home} prefix={prefix}/>} home={home} prefix={prefix} blog={page.kind === 'blog' || page.kind === 'article'}/>
     {page.preview && <aside className="preview-notice" aria-label="Попередній перегляд">
       <span>Попередній перегляд · {page.trashed ? 'У кошику' : page.hidden ? 'Приховано' : page.hasDraft ? 'Чернетка' : 'Опублікована версія'}</span>
       <a className="text-link" target="_top" href={'/admin?section=' + (page.kind === 'article' ? 'articles' : 'projects')}>До редактора</a>

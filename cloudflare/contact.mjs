@@ -1,4 +1,3 @@
-import { contactTypes } from '../src/contact-types.mjs';
 
 function reply(status, error) {
   return Response.json(error ? { error } : { ok: true }, {
@@ -28,11 +27,9 @@ export async function submitContact(request, env, readBody) {
   const name = clean('name');
   const phone = clean('phone');
   const message = clean('message');
-  const type = clean('type');
   const digits = phone.replace(/\D/g, '').length;
   if (!name || name.length > 80 || !message || message.length > 1800
-      || phone.length > 25 || !/^[+0-9()\s.\-]+$/.test(phone) || digits < 7 || digits > 15
-      || (type && !contactTypes.includes(type))) {
+      || phone.length > 25 || !/^[+0-9()\s.\-]+$/.test(phone) || digits < 7 || digits > 15) {
     return reply(400, 'Перевірте ім’я, телефон і повідомлення.');
   }
 
@@ -50,7 +47,6 @@ export async function submitContact(request, env, readBody) {
     '',
     'Ім’я: ' + name,
     'Телефон: ' + phone,
-    ...(type ? ['Тип проєкту: ' + type] : []),
     '',
     message,
   ].join('\n');

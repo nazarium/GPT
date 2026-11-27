@@ -20,7 +20,7 @@ function ToolbarIcon({name}) {
 function BufferLabel({text}) {
  return text.split('Buffer').map((part,i)=><span key={i}>{i>0&&<span className="social-buffer-brand"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 1 0 7l12 6 12-6L12 1Zm-9.6 9.8L0 12l12 6 12-6-2.4-1.2L12 15.6l-9.6-4.8Zm0 5L0 17l12 6 12-6-2.4-1.2L12 20.6l-9.6-4.8Z"/></svg>Buffer</span>}{part}</span>);
 }
-const clone=x=>JSON.parse(JSON.stringify(x));
+const clone=x=>structuredClone(x);
 const localDate=value=>{const d=new Date(value);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);};
 const formatDate=(value,timezone)=>value?new Intl.DateTimeFormat('uk-UA',{dateStyle:'medium',timeStyle:'short',timeZone:timezone}).format(new Date(value)):'—';
 function Download({value,name,children}) {return <button type="button" onClick={()=>{const u=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}}>{children}</button>;}

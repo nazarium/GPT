@@ -1,3 +1,5 @@
+import {snapshotResponse,restore,importBatch,removeExpiredBackups} from './site-backup.mjs';
+import {defaultTools, validateTools} from './site-tools.mjs';
 import { DurableObject } from 'cloudflare:workers';
 import { tick, socialAdmin } from '../social/engine.mjs';
 import { notFound } from './not-found.mjs';
@@ -32,6 +34,54 @@ const marker = '<meta name="archi-cloud-admin">';
 const photoPath = /^assets\/projects\/[\w/-]+\.(jpe?g|png|webp)$/i;
 const uploadPath = /^\/assets\/projects\/cloud\/[a-f0-9-]{36}\.(jpg|png|webp)$/;
 const heroUploadPath = /^\/assets\/hero\/cloud\/[a-f0-9-]{36}\.(jpg|png|webp)$/;
+const adminRoutes = {
+  "/api/admin/home/tools": ["GET", "POST"],
+  "/api/admin/home/backup": ["GET", "POST"],
+  "/api/admin/home": [
+    "GET",
+    "POST"
+  ],
+  "/api/admin/home/order": [
+    "GET",
+    "POST"
+  ],
+  "/api/admin/home/social": [
+    "GET",
+    "POST"
+  ],
+  "/api/admin/home/texts": [
+    "GET",
+    "POST"
+  ],
+  "/api/admin/home/contacts": [
+    "GET",
+    "POST"
+  ],
+  "/api/admin/projects": [
+    "GET",
+    "POST"
+  ],
+  "/api/admin/articles": [
+    "GET",
+    "POST"
+  ],
+  "/api/admin/projects/order": [
+    "GET",
+    "POST"
+  ],
+  "/api/admin/home/upload": [
+    "POST"
+  ],
+  "/api/admin/upload": [
+    "POST"
+  ],
+  "/api/admin/projects/state": [
+    "POST"
+  ],
+  "/api/admin/articles/state": [
+    "POST"
+  ]
+};
 const adminLegalPath = /^\/api\/admin\/legal\/(terms|privacy-policy)$/;
 const json = (value, status = 200) => Response.json(value, {
   status, headers: { 'Cache-Control': 'no-store' },
@@ -79,6 +129,29 @@ function imageFormat(bytes) {
 }
 
 export class PortfolioStore extends DurableObject {
+  contentEpoch = 0;
+  activeMutations = 0;
+  exportBackup() {
+    const epoch = this.contentEpoch;
+    const check = () => {
+      if (this.activeMutations || this.contentEpoch !== epoch) throw Error('Дані змінено під час експорту. Повторіть завантаження.');
+    };
+    return snapshotResponse(this.ctx.storage, this.env.ADMIN_PASSWORD, tx => this.backupSeeds(tx), task => this.ctx.waitUntil(task), check);
+  }
+
+  async backupSeeds(storage){
+    const seeds=[
+      ...(await this.catalog(storage)).map(v=>['project:'+v.id,v]),
+      ...(await this.articles(storage)).map(v=>['article:'+v.id,v]),
+      ['home-hero',await this.home(storage)],['home-order',await this.homeOrder(storage)],
+      ['home-social',await this.homeSocial(storage)],['home-texts',await this.homeTexts(storage)],
+      ['home-contacts',await this.homeContacts(storage)],['site-tools',await this.tools(storage)],
+      ['legal:terms',await this.legal('terms',storage)],['legal:privacy-policy',await this.legal('privacy-policy',storage)],
+    ];
+    return seeds;
+  }
+  async tools(storage=this.ctx.storage){return {...defaultTools(),...await storage.get('site-tools')};}
+
   async legal(id, storage = this.ctx.storage) {
     return await storage.get('legal:' + id) ?? originalLegal(id);
   }
@@ -177,7 +250,11 @@ export class PortfolioStore extends DurableObject {
       }
       const address = input.address === undefined ? current.address : typeof input.address === 'string' ? input.address.trim() : '';
       if (!address || address.length > 200) throw new Error('Вкажіть адресу (до 200 символів).');
-      const saved = { revision: current.revision + 1, phone, telegram, email, address };
+      const partnerBot = input.partnerBot === undefined ? current.partnerBot : typeof input.partnerBot === 'string' ? input.partnerBot.trim() : '';
+      if (!/^https:\/\/t\.me\/[a-z0-9_]{5,32}(?:\?start=[a-z0-9_-]{1,64})?$/i.test(partnerBot)) {
+        throw new Error('Вкажіть посилання https://t.me/ім’я_бота, за потреби з ?start=параметр.');
+      }
+      const saved = { revision: current.revision + 1, phone, telegram, email, address, partnerBot };
       await transaction.put('home-contacts', saved);
       return saved;
     });
@@ -491,7 +568,7 @@ export class PortfolioStore extends DurableObject {
     }
     const descriptionInput = typeof input.description === 'string' ? input.description.trim() : undefined;
     if (descriptionInput?.length > 450) throw new Error('Опис має містити до 450 символів.');
-    if ((publishing && (!title || !label)) || title.length > 150 || label.length > 100 || !Object.hasOwn(projectCategories, input.category)) {
+    if ((publishing && (!title || !label)) || title.length > 150 || label.length > 100 || !Object.hasOwn((await this.tools()).categories, input.category)) {
       throw new Error('Заповніть назву, тип і категорію.');
     }
     const url = typeof input.url === 'string' ? input.url.trim() : '';
@@ -538,8 +615,53 @@ export class PortfolioStore extends DurableObject {
   }
 
   async fetch(request) {
+    const mutating = request.method === 'POST';
+    if (mutating) { this.contentEpoch++; this.activeMutations++; }
+    try { return await this.handleRequest(request); }
+    finally { if (mutating) { this.contentEpoch++; this.activeMutations--; } }
+  }
+
+  async handleRequest(request) {
     const { pathname, searchParams } = new URL(request.url);
     await this.migrateArticleSlugs();
+    if(pathname==='/internal/monthly-backup'){
+      const settings=await this.tools();
+      if(!settings.monthlyBackup||!this.env.BACKUPS)return json({skipped:true});
+      await removeExpiredBackups(this.env.BACKUPS);
+      const week=new Date().toISOString().slice(0,7);
+      const name='monthly/'+week+'.json';
+      if(await this.env.BACKUPS.head(name))return json({exists:true});
+      const backup=this.exportBackup();
+      await this.env.BACKUPS.put(name,backup.body,{httpMetadata:{contentType:'application/json'}});
+      return json({ok:true});
+    }
+    if(pathname==='/api/admin/home/backup'){
+      try{
+        if(request.method==='GET')return this.exportBackup();
+        if(request.method==='POST'){
+          if (searchParams.has('restore')) {
+            const input = JSON.parse(new TextDecoder().decode(await limitedBody(request, 8 * 1024 * 1024)));
+            return json(await importBatch(this.ctx.storage, this.env.ADMIN_PASSWORD, searchParams.get('restore'), input));
+          }
+          const input=JSON.parse(new TextDecoder().decode(await limitedBody(request,20*1024*1024)));
+          if(input.confirm!=='RESTORE')return fail('Підтвердьте відновлення.');
+          return json(await restore(this.ctx.storage,this.env.ADMIN_PASSWORD,input.backup));
+        }
+      }catch(error){return fail(error.message);}
+    }
+    if(pathname==='/api/admin/home/tools'){
+      if(request.method==='GET')return json({...await this.tools(),r2Ready:!!this.env.BACKUPS});
+      if(request.method==='POST'){
+        try {
+          const input=JSON.parse(new TextDecoder().decode(await limitedBody(request,16384)));
+          const saved=await this.ctx.storage.transaction(async tx=>{
+            const value=validateTools(input,await this.tools(tx));
+            if(value?.monthlyBackup&&!this.env.BACKUPS)throw Error('Сховище R2 ще не підключено.');
+            if(value)await tx.put('site-tools',value);return value;
+          });return saved?json({...saved,r2Ready:!!this.env.BACKUPS}):fail('Версія застаріла. Оновіть сторінку.',409);
+        }catch(error){return fail(error.message);}
+      }
+    }
     const legalId = /^\/(?:api\/admin|internal)\/legal\/(terms|privacy-policy)$/.exec(pathname)?.[1];
     if (request.method === 'GET' && legalId) return json(await this.legal(legalId));
     if (request.method === 'GET' && pathname === '/api/admin/home') return json(await this.home());
@@ -556,11 +678,11 @@ export class PortfolioStore extends DurableObject {
       } });
     }
     if (request.method === 'GET' && pathname === '/internal/home') {
-      const [hero, order, social, copy, { phone, telegram, email, address }] = await Promise.all([
+      const [hero, order, social, copy, { phone, telegram, email, address, partnerBot }] = await Promise.all([
         this.home(), this.homeOrder(), this.homeSocial(), this.homeTexts(), this.homeContacts(),
       ]);
       return json({ slides: hero.slides, timing: { transition: hero.transition, intervalSeconds: hero.intervalSeconds },
-        order, social, copy, contacts: { phone, telegram, email, address } });
+        tools: await this.tools(), order, social, copy, contacts: { phone, telegram, email, address, partnerBot } });
     }
     if (request.method === 'GET' && pathname === '/internal/project-route') {
       const slug = searchParams.get('slug');
@@ -686,6 +808,8 @@ export class PortfolioStore extends DurableObject {
 export default {
   async scheduled(controller, env, ctx) {
     const store = env.PORTFOLIO.get(env.PORTFOLIO.idFromName('archi-create'));
+    const date=new Date(controller.scheduledTime);
+    if(date.getUTCDate()===1&&date.getUTCHours()===0&&date.getUTCMinutes()===0)ctx.waitUntil(store.fetch('https://internal/internal/monthly-backup').then(r=>{if(!r.ok)throw Error('Monthly backup failed');}));
     ctx.waitUntil(tick(env, async () => {
       const response = await store.fetch('https://archi-create.com.ua/api/projects');
       if (!response.ok) throw new Error('Project catalog unavailable');
@@ -693,8 +817,22 @@ export default {
     }, Date.now(), fetch, controller.scheduledTime).then(result => console.log(JSON.stringify({ event: 'social_tick', ...result }))));
   },
   async fetch(request, env, ctx) {
+    const response = await this.handle(request, env, ctx);
+    let output=response;
+    if(request.method==='GET'&&!new URL(request.url).pathname.startsWith('/admin')&&response.headers.get('Content-Type')?.includes('text/html')){
+      const store=env.PORTFOLIO.get(env.PORTFOLIO.idFromName('archi-create'));
+      const settings=await (await store.fetch('https://internal/api/admin/home/tools')).json();
+      if(settings.analyticsToken) output=new HTMLRewriter().on('head',{element(el){el.append(`<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='${JSON.stringify({token:settings.analyticsToken})}'></script>`,{html:true});}}).transform(response);
+    }
+    const secured = new Response(request.method === 'HEAD' ? null : output.body, output);
+    secured.headers.set('X-Content-Type-Options', 'nosniff');
+    secured.headers.set('X-Frame-Options', 'SAMEORIGIN');
+    secured.headers.set('Content-Security-Policy', "script-src 'self' https://static.cloudflareinsights.com; frame-ancestors 'self'; base-uri 'self'; object-src 'none'");
+    return secured;
+  },
+  async handle(request, env, ctx) {
     if (request.method === 'HEAD') {
-      const response = await this.fetch(new Request(request, { method: 'GET' }), env);
+      const response = await this.handle(new Request(request, { method: 'GET' }), env, ctx);
       return new Response(null, { status: response.status, statusText: response.statusText, headers: response.headers });
     }
     const url = new URL(request.url);
@@ -734,7 +872,7 @@ export default {
       } });
       return renderProject(request, env, project);
     }
-    if (path === '/sitemap.xml' && (request.method === 'GET' || request.method === 'HEAD')) {
+    if (path === '/sitemap.xml' && request.method === 'GET') {
       const articles = await (await store().fetch(new URL('/internal/articles', url))).json();
       const projects = await (await store().fetch(new URL('/api/projects', url))).json();
       const paths = ['/', '/blog.html', '/terms.html', '/privacy-policy.html',
@@ -744,14 +882,14 @@ export default {
       const xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
         + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + entries.join('\n') + '\n</urlset>\n';
-      return new Response(request.method === 'HEAD' ? null : xml, { headers: {
+      return new Response(xml, { headers: {
         'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'no-store',
       } });
     }
-    if (path === '/robots.txt' && (request.method === 'GET' || request.method === 'HEAD')) {
+    if (path === '/robots.txt' && request.method === 'GET') {
       const robots = 'User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/\n'
         + '\nSitemap: https://archi-create.com.ua/sitemap.xml\n';
-      return new Response(request.method === 'HEAD' ? null : robots, { headers: {
+      return new Response(robots, { headers: {
         'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store',
       } });
     }
@@ -785,9 +923,9 @@ export default {
           }
           return fail('Запит відхилено.', 403);
         }
-        if (request.method === 'GET' && (adminLegalPath.test(path) || ['/api/admin/home', '/api/admin/home/order', '/api/admin/home/social', '/api/admin/home/texts', '/api/admin/home/contacts', '/api/admin/projects', '/api/admin/articles', '/api/admin/projects/order'].includes(path))) return store().fetch(request);
+        if (request.method === 'GET' && (adminLegalPath.test(path) || adminRoutes[path]?.includes('GET'))) return store().fetch(request);
         if (request.method !== 'POST' || request.headers.get('Origin') !== url.origin) return fail('Запит відхилено.', 403);
-        if (!adminLegalPath.test(path) && !['/api/admin/home', '/api/admin/home/order', '/api/admin/home/social', '/api/admin/home/texts', '/api/admin/home/contacts', '/api/admin/home/upload', '/api/admin/projects', '/api/admin/articles', '/api/admin/upload', '/api/admin/projects/state', '/api/admin/articles/state', '/api/admin/projects/order'].includes(path)) return fail('Запит не знайдено.', 404);
+        if (!adminLegalPath.test(path) && !adminRoutes[path]?.includes('POST')) return fail('Запит не знайдено.', 404);
         return store().fetch(request);
       }
       const [body, type] = path === '/admin.js' ? [admin.script, 'text/javascript']
@@ -796,7 +934,7 @@ export default {
     }
     if (request.method === 'GET' && (path === '/api/projects' || uploadPath.test(path) || heroUploadPath.test(path))) return store().fetch(request);
     const match = articleRoute.exec(path);
-    if ((request.method === 'GET' || request.method === 'HEAD' && match) && (path === '/' || path === '/index.html' || path === '/blog.html' || match)) {
+    if (request.method === 'GET' && (path === '/' || path === '/index.html' || path === '/blog.html' || match)) {
       const articles = await (await store().fetch(new URL('/internal/articles', url))).json();
       let article = null;
       if (match) {
@@ -815,7 +953,7 @@ export default {
       if (!match && path !== '/blog.html') rewriter.on('head', { element(head) { head.append(marker, { html: true }); } });
       if (match || path === '/blog.html') {
         const rendered = renderBlog(response, rewriter, path, articles, article);
-        return request.method === 'HEAD' ? new Response(null, { status: rendered.status, headers: rendered.headers }) : rendered;
+        return rendered;
       }
       const [projects, home] = await Promise.all(['/api/projects', '/internal/home'].map(async endpoint =>
         (await store().fetch(new URL(endpoint, url))).json()));
@@ -830,7 +968,7 @@ export default {
     }
     const assetRequest = path === '/' ? new Request(new URL('/index.html', url), request) : request;
     const response = await env.ASSETS.fetch(assetRequest);
-    if (response.status === 404 && ['GET', 'HEAD'].includes(request.method)
+    if (response.status === 404 && request.method === 'GET'
         && !path.startsWith('/api/') && !path.startsWith('/assets/')
         && (!/\.[^/]+$/.test(path) || /\.html?$/i.test(path) || request.headers.get('Accept')?.includes('text/html'))) {
       return notFound(request);

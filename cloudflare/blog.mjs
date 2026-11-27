@@ -1,3 +1,4 @@
+import { compileBlogTemplate } from '../src/blog-template.mjs';
 import originals from '../.build/articles.mjs';
 import home from '../content/index.json';
 import blog from '../content/blog.json';
@@ -7,6 +8,9 @@ import { renderToString } from 'react-dom/server.browser';
 import { App } from '../.build/app.mjs';
 import { renderHomeTexts } from './home-texts.mjs';
 import { articlePath, articleRoute } from '../src/article-address.mjs';
+
+const blogTemplate = compileBlogTemplate(blog.body, 'blog');
+const homeBlogTemplate = compileBlogTemplate(home.blog, 'home');
 
 export { articleRoute };
 export const originalArticles = originals;
@@ -74,8 +78,7 @@ export function renderBlog(response, rewriter, path, articles, article, projects
       rewriter.on('meta[property="' + property + '"]', { element: element => element.setAttribute('content', content) });
     }
   } else if (path === '/blog.html') {
-    markup = blog.body.replace(/<span>\d+ стаття<\/span>/, `<span>Статей: ${articles.length}</span>`)
-      .replace(/<article class="blog-card">[\s\S]*<\/article>/, () => articles.map(card).join(''));
+    markup = blogTemplate(articles.length, articles.map(card).join(''));
     page = { kind: 'blog', body: markup };
   } else {
     const { title, description, image } = homeSettings.social;
@@ -87,12 +90,11 @@ export function renderBlog(response, rewriter, path, articles, article, projects
     rewriter.on('meta[property="og:image"]', { element: element => element.setAttribute('content', 'https://archi-create.com.ua/' + image) });
     const selectedArticles = homeSettings.order.articles === 'random' ? shuffle(articles) : articles;
     const selectedProjects = homeSettings.order.projects === 'random' ? shuffle(projects) : projects;
-    markup = home.blog.replace(/Усі статті · \d+/, 'Усі статті · ' + articles.length)
-      .replace(/<article class="blog-card">[\s\S]*<\/article>/, () => selectedArticles.slice(0, homeSettings.order.articleCount).map(card).join(''));
+    markup = homeBlogTemplate(articles.length, selectedArticles.slice(0, homeSettings.order.articleCount).map(card).join(''));
     const { head, ...content } = home;
     const edited = homeSettings.copy.revision ? renderHomeTexts(homeSettings.copy.texts) : {};
     page = { ...content, ...edited, blog: markup, projects: selectedProjects, projectCount: homeSettings.order.projectCount,
-      heroSlides: homeSettings.slides, heroTiming: homeSettings.timing, contacts: homeSettings.contacts,
+      projectCategories: homeSettings.tools?.categories, heroSlides: homeSettings.slides, heroTiming: homeSettings.timing, contacts: homeSettings.contacts,
       contactBot: homeSettings.contactBot };
   }
   return renderApp(response, rewriter, page);

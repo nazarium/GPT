@@ -1,10 +1,12 @@
+import { compileBlogTemplate } from '../src/blog-template.mjs';
 import { build } from 'esbuild';
 import { createHash } from 'node:crypto';
-import { cp, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { renderToString } from 'react-dom/server';
 import { createElement } from 'react';
 
 await mkdir('.build', { recursive: true });
+await rm(new URL('../dist/', import.meta.url), { recursive: true, force: true });
 await cp('public', 'dist', { recursive: true });
 const options = { bundle: true, jsx: 'automatic', logLevel: 'warning' };
 await build({ ...options, entryPoints: ['src/App.jsx'], platform: 'node', packages: 'external', format: 'esm', outfile: '.build/app.mjs' });
@@ -20,6 +22,8 @@ const routes = ['index.json', 'blog.json', 'terms.json', 'privacy-policy.json', 
 await mkdir('dist/blog', { recursive: true });
 for (const route of routes) {
   const { head, ...content } = JSON.parse(await readFile('content/' + route, 'utf8'));
+  if (route === 'index.json') compileBlogTemplate(content.blog, 'home');
+  if (route === 'blog.json') compileBlogTemplate(content.body, 'blog');
   const page = { ...content, buildYear: new Date().getFullYear() };
   const markup = renderToString(createElement(App, { page }));
   const data = JSON.stringify(page).replaceAll('<', '\\u003c');

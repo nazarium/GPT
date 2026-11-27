@@ -1,7 +1,7 @@
 import { SocialEditor } from './SocialEditor.jsx';
 import { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { projectCategories } from './project-categories.mjs';
+import { projectCategories as defaultProjectCategories } from './project-categories.mjs';
 import { BlogEditor } from './BlogEditor.jsx';
 import { HomeEditor } from './HomeEditor.jsx';
 import { useUnsavedChanges } from './useUnsavedChanges.js';
@@ -20,6 +20,8 @@ async function api(path, options) {
 }
 
 function Admin() {
+  const [projectCategories,setProjectCategories]=useState(defaultProjectCategories);
+  useEffect(()=>{if(cloud)api('home/tools').then(data=>setProjectCategories(data.categories)).catch(e=>setError(e.message));},[]);
   const [projects, setProjects] = useState([]);
   const [draft, setDraft] = useState(empty);
   const [search, setSearch] = useState('');

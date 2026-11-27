@@ -115,7 +115,7 @@ export function Contact({ heading, intro = defaultContactTexts.contactIntro, con
         </div>
         <div className="contact-partners">
           <p className="contact-partners-label">Менеджерам з продажу:</p>
-          <a className="contact-action" href="https://t.me/ArchiCreatePartnersBot?start=website"
+          <a className="contact-action" href={contacts.partnerBot ?? defaultContacts.partnerBot}
             target="_blank" rel="noopener noreferrer" aria-label="Запропонувати співпрацю — відкрити Telegram-бота Archi-Create">
             Запропонувати співпрацю <span aria-hidden="true">↗</span>
           </a>

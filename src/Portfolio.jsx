@@ -22,8 +22,13 @@ export function ProjectCard({ project, offset, onOpen }) {
   </button>;
 }
 
-export function Portfolio({ heading, initialCatalog, pageSize = defaultProjectCount }) {
+export function Portfolio({ categoryLabels, heading, initialCatalog, pageSize = defaultProjectCount }) {
+  const categories={all:'Усі',...(categoryLabels??projectCategories)};
   const [category, setCategory] = useState('all');
+  useEffect(()=>{
+    const requested=new URLSearchParams(window.location.search).get('category');
+    if(requested&&Object.hasOwn(categories,requested))setCategory(requested);
+  },[categoryLabels]);
   const [limit, setLimit] = useState(pageSize);
   const [project, setProject] = useState(null);
   const [catalog, setCatalog] = useState(initialCatalog ?? projects);
