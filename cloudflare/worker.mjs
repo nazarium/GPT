@@ -1,4 +1,6 @@
-import {snapshotResponse,restore,importBatch,removeExpiredBackups} from './site-backup.mjs';
+import {DriveBackup} from './drive-backup.mjs';
+export {DriveBackup};
+import {snapshotResponse,restore,importBatch} from './site-backup.mjs';
 import {defaultTools, validateTools} from './site-tools.mjs';
 import { DurableObject } from 'cloudflare:workers';
 import { tick, socialAdmin } from '../social/engine.mjs';
@@ -132,11 +134,12 @@ export class PortfolioStore extends DurableObject {
   contentEpoch = 0;
   activeMutations = 0;
   exportBackup() {
+    if (!this.env.BACKUP_SIGNING_KEY) throw Error('Окремий ключ підпису резервних копій не налаштований.');
     const epoch = this.contentEpoch;
     const check = () => {
       if (this.activeMutations || this.contentEpoch !== epoch) throw Error('Дані змінено під час експорту. Повторіть завантаження.');
     };
-    return snapshotResponse(this.ctx.storage, this.env.ADMIN_PASSWORD, tx => this.backupSeeds(tx), task => this.ctx.waitUntil(task), check);
+    return snapshotResponse(this.ctx.storage, this.env.BACKUP_SIGNING_KEY, tx => this.backupSeeds(tx), task => this.ctx.waitUntil(task), check);
   }
 
   async backupSeeds(storage){
@@ -624,41 +627,30 @@ export class PortfolioStore extends DurableObject {
   async handleRequest(request) {
     const { pathname, searchParams } = new URL(request.url);
     await this.migrateArticleSlugs();
-    if(pathname==='/internal/monthly-backup'){
-      const settings=await this.tools();
-      if(!settings.monthlyBackup||!this.env.BACKUPS)return json({skipped:true});
-      await removeExpiredBackups(this.env.BACKUPS);
-      const week=new Date().toISOString().slice(0,7);
-      const name='monthly/'+week+'.json';
-      if(await this.env.BACKUPS.head(name))return json({exists:true});
-      const backup=this.exportBackup();
-      await this.env.BACKUPS.put(name,backup.body,{httpMetadata:{contentType:'application/json'}});
-      return json({ok:true});
-    }
+    if(pathname==='/internal/backup-export') return this.exportBackup();
     if(pathname==='/api/admin/home/backup'){
       try{
         if(request.method==='GET')return this.exportBackup();
         if(request.method==='POST'){
           if (searchParams.has('restore')) {
             const input = JSON.parse(new TextDecoder().decode(await limitedBody(request, 8 * 1024 * 1024)));
-            return json(await importBatch(this.ctx.storage, this.env.ADMIN_PASSWORD, searchParams.get('restore'), input));
+            return json(await importBatch(this.ctx.storage, this.env.BACKUP_SIGNING_KEY, searchParams.get('restore'), input, this.env.LEGACY_BACKUP_SIGNING_KEY ?? this.env.ADMIN_PASSWORD));
           }
           const input=JSON.parse(new TextDecoder().decode(await limitedBody(request,20*1024*1024)));
           if(input.confirm!=='RESTORE')return fail('Підтвердьте відновлення.');
-          return json(await restore(this.ctx.storage,this.env.ADMIN_PASSWORD,input.backup));
+          return json(await restore(this.ctx.storage,this.env.BACKUP_SIGNING_KEY,input.backup,this.env.LEGACY_BACKUP_SIGNING_KEY ?? this.env.ADMIN_PASSWORD));
         }
       }catch(error){return fail(error.message);}
     }
     if(pathname==='/api/admin/home/tools'){
-      if(request.method==='GET')return json({...await this.tools(),r2Ready:!!this.env.BACKUPS});
+      if(request.method==='GET')return json(await this.tools());
       if(request.method==='POST'){
         try {
           const input=JSON.parse(new TextDecoder().decode(await limitedBody(request,16384)));
           const saved=await this.ctx.storage.transaction(async tx=>{
             const value=validateTools(input,await this.tools(tx));
-            if(value?.monthlyBackup&&!this.env.BACKUPS)throw Error('Сховище R2 ще не підключено.');
             if(value)await tx.put('site-tools',value);return value;
-          });return saved?json({...saved,r2Ready:!!this.env.BACKUPS}):fail('Версія застаріла. Оновіть сторінку.',409);
+          });return saved?json(saved):fail('Версія застаріла. Оновіть сторінку.',409);
         }catch(error){return fail(error.message);}
       }
     }
@@ -808,8 +800,12 @@ export class PortfolioStore extends DurableObject {
 export default {
   async scheduled(controller, env, ctx) {
     const store = env.PORTFOLIO.get(env.PORTFOLIO.idFromName('archi-create'));
-    const date=new Date(controller.scheduledTime);
-    if(date.getUTCDate()===1&&date.getUTCHours()===0&&date.getUTCMinutes()===0)ctx.waitUntil(store.fetch('https://internal/internal/monthly-backup').then(r=>{if(!r.ok)throw Error('Monthly backup failed');}));
+    const date = new Date(controller.scheduledTime);
+    if (date.getUTCDate() === 1 && date.getUTCHours() === 0 && date.getUTCMinutes() === 0) {
+      ctx.waitUntil(env.DRIVE_BACKUP.get(env.DRIVE_BACKUP.idFromName('archi-create')).fetch('https://internal/tick', {method: 'POST'}).then(async response => {
+        if (!response.ok) console.error(JSON.stringify({event: 'drive_backup_schedule_failed', status: response.status}));
+      }));
+    }
     ctx.waitUntil(tick(env, async () => {
       const response = await store.fetch('https://archi-create.com.ua/api/projects');
       if (!response.ok) throw new Error('Project catalog unavailable');
@@ -836,6 +832,9 @@ export default {
       return new Response(null, { status: response.status, statusText: response.statusText, headers: response.headers });
     }
     const url = new URL(request.url);
+    if (url.pathname === '/api/backup/google/callback') {
+      return env.DRIVE_BACKUP.get(env.DRIVE_BACKUP.idFromName('archi-create')).fetch(new Request('https://internal/callback' + url.search));
+    }
     let path = url.pathname;
     let decodedPath = path;
     try { decodedPath = decodeURIComponent(path); }
@@ -906,6 +905,11 @@ export default {
         const item = items.find(item => item.id === url.searchParams.get('id'));
         if (!item) return notFound(request);
         return renderPreview(request, env, kind, item);
+      }
+      if (path.startsWith('/api/admin/home/drive-backup/')) {
+        if (request.method !== 'GET' && (request.method !== 'POST' || request.headers.get('Origin') !== url.origin)) return fail('Запит відхилено.', 403);
+        if (!['status','connect','disconnect','settings','start'].includes(path.split('/').at(-1))) return fail('Запит не знайдено.', 404);
+        return env.DRIVE_BACKUP.get(env.DRIVE_BACKUP.idFromName('archi-create')).fetch(request);
       }
       if (path.startsWith('/api/admin/social/')) {
         if (request.method !== 'GET' && (request.method !== 'POST' || request.headers.get('Origin') !== url.origin)) return fail('Запит відхилено.', 403);

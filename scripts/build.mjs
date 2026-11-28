@@ -1,4 +1,5 @@
 import { compileBlogTemplate } from '../src/blog-template.mjs';
+import { writeBackupBuild } from './backup-build.mjs';
 import { build } from 'esbuild';
 import { createHash } from 'node:crypto';
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
@@ -46,3 +47,5 @@ for (const route of routes) {
   await writeFile('dist/' + route.replace(/\.json$/, '.html'), html);
 }
 console.log(`Built ${routes.length} pages and ${bundle} (${code.length} bytes).`);
+
+await writeBackupBuild();

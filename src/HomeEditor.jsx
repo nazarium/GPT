@@ -22,7 +22,7 @@ function HomeTabIcon({name}) {
 const slideDragType = 'application/x-archi-hero-slide';
 
 export function HomeEditor({ api }) {
-  const [activeTab,setActiveTab]=useState('carousel');
+  const [activeTab,setActiveTab]=useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('tools') === 'backups' ? 'backups' : 'carousel');
   const [draft, setDraft] = useState(null);
   const [busy, setBusy] = useState(false);
   const [dirty, setDirty] = useState(false);

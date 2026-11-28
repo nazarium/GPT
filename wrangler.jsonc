@@ -19,7 +19,9 @@
     "SOCIAL_ARCHIVE_HOUR": "10",
     "BUFFER_ORGANIZATION_ID": "6af81ea1a404ca09b76b70e0",
     "BUFFER_CHANNELS": "[{\"platform\":\"instagram\",\"id\":\"6af8240462b70b94b02a5887\",\"mode\":\"automatic\"},{\"platform\":\"facebook\",\"id\":\"6af8245862b70b94b02a5dcd\",\"mode\":\"automatic\"},{\"platform\":\"tiktok\",\"id\":\"6af8247162b70b94b02a5f26\",\"mode\":\"notification\"}]",
-    "TIKTOK_PHOTO_AUTO_VERIFIED": "false"
+    "TIKTOK_PHOTO_AUTO_VERIFIED": "false",
+    "BACKUP_ACCOUNT_ID": "de55da075640d56ffdfcb9e5107ed679",
+    "BACKUP_D1_ID": "eeb932fd-33cc-493f-a955-74ba3984b7ae"
   },
   "d1_databases": [
     {
@@ -60,6 +62,10 @@
       {
         "name": "PORTFOLIO",
         "class_name": "PortfolioStore"
+      },
+      {
+        "name": "DRIVE_BACKUP",
+        "class_name": "DriveBackup"
       }
     ]
   },
@@ -68,6 +74,12 @@
       "tag": "v1",
       "new_sqlite_classes": [
         "PortfolioStore"
+      ]
+    },
+    {
+      "tag": "v2-drive-backup",
+      "new_sqlite_classes": [
+        "DriveBackup"
       ]
     }
   ]

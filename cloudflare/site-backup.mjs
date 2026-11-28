@@ -33,7 +33,7 @@ async function streamHmac(secret) {
 }
 
 export async function writeSnapshot(storage, secret, seeds, writer, checkConsistency = () => {}) {
-  if (!secret) throw Error('Пароль адміністратора не налаштований.');
+  if (!secret) throw Error('Окремий ключ підпису резервних копій не налаштований.');
   const encoder = new TextEncoder();
   const hmac = await streamHmac(secret);
   const write = text => writer.write(encoder.encode(text));
@@ -84,8 +84,13 @@ export function snapshotResponse(storage, secret, getSeeds, waitUntil, checkCons
   } });
 }
 
-export async function restore(storage,secret,backup){
- if(typeof backup?.payload!=='string'||!Array.isArray(backup.signature)||backup.signature.length!==32||!await crypto.subtle.verify('HMAC',await key(secret),new Uint8Array(backup.signature),new TextEncoder().encode(backup.payload)))throw Error('Підпис копії некоректний. Потрібна незмінена копія з цього сайту й того самого пароля адміністратора.');
+export async function restore(storage,secret,backup,legacySecret){
+ if(typeof backup?.payload!=='string'||!Array.isArray(backup.signature)||backup.signature.length!==32)throw Error('Некоректний файл копії.');
+ let verified=false;
+ for(const candidate of new Set([secret,legacySecret].filter(Boolean))) {
+  if(await crypto.subtle.verify('HMAC',await key(candidate),new Uint8Array(backup.signature),new TextEncoder().encode(backup.payload)))verified=true;
+ }
+ if(!verified)throw Error('Підпис копії некоректний. Перевірте файл і ключ резервних копій.');
  const data=JSON.parse(backup.payload);
  if(data.format!=='archi-create-do-v1'||!Array.isArray(data.entries))throw Error('Непідтримуваний формат копії.');
  const entries=new Map(data.entries.map(([k,v])=>[k,decode(v)]));
@@ -95,9 +100,9 @@ export async function restore(storage,secret,backup){
 }
 
 // Staging tables are separate from the site's KV records and its exports.
-export async function importBatch(storage, secret, action, input) {
+export async function importBatch(storage, secret, action, input, legacySecret) {
   const sql = storage.sql;
-  if (!secret) throw Error('Пароль адміністратора не налаштований.');
+  if (!secret) throw Error('Окремий ключ підпису резервних копій не налаштований.');
   if (action === 'start') {
     if (typeof input.date !== 'string' || !/^[\dT:.Z-]{1,40}$/.test(input.date)) throw Error('Некоректна дата копії.');
     const session = crypto.randomUUID();
@@ -135,9 +140,9 @@ export async function importBatch(storage, secret, action, input) {
   const signature = input.signature;
   if (!Array.isArray(signature) || signature.length !== 32 || !signature.every(n => Number.isInteger(n) && n >= 0 && n <= 255)) throw Error('Некоректний підпис копії.');
   const encoder = new TextEncoder();
-  const mac = await streamHmac(secret);
-  const update = text => mac.update(encoder.encode(text));
-  let digest;
+  const macs = await Promise.all([...new Set([secret, legacySecret].filter(Boolean))].map(streamHmac));
+  const update = text => Promise.all(macs.map(mac => mac.update(encoder.encode(text))));
+  let digests;
   try {
     await update('{"format":"archi-create-do-v1","createdAt":' + JSON.stringify(session.date) + ',"entries":[');
     for (let i = 0; i < input.offset; i++) {
@@ -145,9 +150,9 @@ export async function importBatch(storage, secret, action, input) {
       await update((i ? ',' : '') + entry);
     }
     await update(']}');
-    digest = await mac.finish();
-  } catch (error) { await mac.abort(error); throw error; }
-  if (digest.reduce((diff, byte, i) => diff | (byte ^ signature[i]), 0)) throw Error('Підпис копії некоректний. Перевірте файл і пароль адміністратора.');
+    digests = await Promise.all(macs.map(mac => mac.finish()));
+  } catch (error) { await Promise.all(macs.map(mac => mac.abort(error))); throw error; }
+  if (!digests.some(digest => digest.reduce((diff, byte, i) => diff | (byte ^ signature[i]), 0) === 0)) throw Error('Підпис копії некоректний. Перевірте файл і ключ резервних копій.');
   storage.transactionSync(() => {
     if (!current() || count() !== input.offset) throw Error('Сеанс імпорту змінився.');
     const kv = storage.kv;
@@ -163,17 +168,4 @@ export async function importBatch(storage, secret, action, input) {
     clear();
   });
   return {ok: true, entries: input.offset};
-}
-
-export async function removeExpiredBackups(bucket,now=Date.now()){
- const cutoff=now-365*24*60*60*1000;
- for(const prefix of ['monthly/','weekly/']){
-  let cursor;
-  do{
-   const page=await bucket.list({prefix,limit:1000,...(cursor?{cursor}:{})});
-   const expired=page.objects.filter(item=>new Date(item.uploaded).getTime()<cutoff).map(item=>item.key);
-   if(expired.length)await bucket.delete(expired);
-   cursor=page.truncated?page.cursor:undefined;
-  }while(cursor);
- }
 }

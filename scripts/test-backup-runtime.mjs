@@ -26,7 +26,7 @@ export class BackupFixture extends PortfolioStore {
 }
 export default {async fetch(r,env,ctx){if(new URL(r.url).pathname.startsWith('/api/'))return site.fetch(r,env,ctx);return env.PORTFOLIO.get(env.PORTFOLIO.idFromName('archi-create')).fetch(r);}};
 `},bundle:true,write:false,format:'esm',platform:'browser',external:['cloudflare:workers']});
-const mf=new Miniflare(convertV4MiniflareOptions({modules:true,script:result.outputFiles[0].text,compatibilityDate:'2026-11-03',bindings:{ADMIN_PASSWORD:'test-runtime-password-for-backups'},durableObjects:{PORTFOLIO:{className:'BackupFixture',useSQLite:true}}}));
+const mf=new Miniflare(convertV4MiniflareOptions({modules:true,script:result.outputFiles[0].text,compatibilityDate:'2026-11-03',bindings:{ADMIN_PASSWORD:'test-runtime-password-for-backups',BACKUP_SIGNING_KEY:'independent-test-backup-key'},durableObjects:{PORTFOLIO:{className:'BackupFixture',useSQLite:true}}}));
 const headers = {Authorization: 'Basic '+Buffer.from('admin:test-runtime-password-for-backups').toString('base64'), Origin:'http://localhost'};
 const download = () => mf.dispatchFetch('http://localhost/api/admin/home/backup',{headers});
 const api = async (path,options) => {
@@ -39,7 +39,7 @@ try{
  assert.equal((await mf.dispatchFetch('http://localhost/seed')).status,200);
  const response=await download();assert.equal(response.status,200);assert.match(response.headers.get('content-disposition'),/attachment/);
  const text=await response.text();assert.ok(Buffer.byteLength(text)>20*1024*1024);
- const backup=JSON.parse(text);assert.deepEqual(backup.signature,[...createHmac('sha256','test-runtime-password-for-backups').update(backup.payload).digest()]);
+ const backup=JSON.parse(text);assert.deepEqual(backup.signature,[...createHmac('sha256','independent-test-backup-key').update(backup.payload).digest()]);
  const entries=JSON.parse(backup.payload).entries;assert.equal(entries.filter(([key])=>key.startsWith('photo:')).length,220);
  await mf.dispatchFetch('http://localhost/modify');
  const state = async()=> (await mf.dispatchFetch('http://localhost/verify')).json();
@@ -54,6 +54,10 @@ try{
  const restoredEnvelope=await (await download()).json();
  const restoredEntries=new Map(JSON.parse(restoredEnvelope.payload).entries);
  assert.deepEqual(restoredEntries,new Map(entries));
+ const legacy={payload:backup.payload,signature:[...createHmac('sha256','test-runtime-password-for-backups').update(backup.payload).digest()]};
+ await importBackup(new Blob([JSON.stringify(legacy)]),api);
+ assert.deepEqual(await state(),{obsolete:false,photo:100});
+
  const canceled=await download();await canceled.body.cancel();
  assert.equal(await(await mf.dispatchFetch('http://localhost/health')).text(),'healthy');
  console.log('Cloudflare runtime passed: '+(Buffer.byteLength(text)/1024/1024).toFixed(1)+' MiB streamed, 220 photo chunks, authenticated admin restore, all records identical, tamper rollback, cancellation.');
